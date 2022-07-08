@@ -641,6 +641,7 @@ else:
             prefix = b'\\\\?\\'
             unc_prefix = b'\\\\?\\UNC\\'
             new_unc_prefix = b'\\\\'
+            colon_sep = b':'
             cwd = os.getcwdb()
             # bpo-38081: Special case for realpath(b'nul')
             if normcase(path) == normcase(os.fsencode(devnull)):
@@ -649,6 +650,7 @@ else:
             prefix = '\\\\?\\'
             unc_prefix = '\\\\?\\UNC\\'
             new_unc_prefix = '\\\\'
+            colon_sep = ':'
             cwd = os.getcwd()
             # bpo-38081: Special case for realpath('nul')
             if normcase(path) == normcase(devnull):
@@ -668,21 +670,25 @@ else:
         # strip off that prefix unless it was already provided on the original
         # path.
         if not had_prefix and path.startswith(prefix):
-            # For UNC paths, the prefix will actually be \\?\UNC\
-            # Handle that case as well.
+            # For UNC paths, the prefix will be \\?\UNC\
             if path.startswith(unc_prefix):
                 spath = new_unc_prefix + path[len(unc_prefix):]
-            else:
+            # For drive paths, the root is of the form \\?\X:\
+            elif path.startswith(colon_sep, len(prefix) + 1):
                 spath = path[len(prefix):]
-            # Ensure that the non-prefixed path resolves to the same path
-            try:
-                if _getfinalpathname(spath) == path:
-                    path = spath
-            except OSError as ex:
-                # If the path does not exist and originally did not exist, then
-                # strip the prefix anyway.
-                if ex.winerror == initial_winerror:
-                    path = spath
+            # For all others, the prefix must be retained.
+            else:
+                spath = None
+            if spath is not None:
+                # Ensure that the non-prefixed path resolves to the same path
+                try:
+                    if _getfinalpathname(spath) == path:
+                        path = spath
+                except OSError as ex:
+                    # If the path does not exist and originally did not exist, then
+                    # strip the prefix anyway.
+                    if ex.winerror == initial_winerror:
+                        path = spath
         return path
 
 
