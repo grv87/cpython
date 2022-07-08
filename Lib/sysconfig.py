@@ -47,13 +47,13 @@ _INSTALL_SCHEMES = {
         'data': '{base}',
         },
     'nt': {
-        'stdlib': '{installed_base}/Lib',
-        'platstdlib': '{base}/Lib',
-        'purelib': '{base}/Lib/site-packages',
-        'platlib': '{base}/Lib/site-packages',
-        'include': '{installed_base}/Include',
-        'platinclude': '{installed_base}/Include',
-        'scripts': '{base}/Scripts',
+        'stdlib': '{installed_base}\\Lib',
+        'platstdlib': '{base}\\Lib',
+        'purelib': '{base}\\Lib\\site-packages',
+        'platlib': '{base}\\Lib\\site-packages',
+        'include': '{installed_base}\\Include',
+        'platinclude': '{installed_base}\\Include',
+        'scripts': '{base}\\Scripts',
         'data': '{base}',
         },
     }
@@ -89,12 +89,12 @@ if _HAS_USER_BASE:
     _INSTALL_SCHEMES |= {
         # NOTE: When modifying "purelib" scheme, update site._get_path() too.
         'nt_user': {
-            'stdlib': '{userbase}/Python{py_version_nodot_plat}',
-            'platstdlib': '{userbase}/Python{py_version_nodot_plat}',
-            'purelib': '{userbase}/Python{py_version_nodot_plat}/site-packages',
-            'platlib': '{userbase}/Python{py_version_nodot_plat}/site-packages',
-            'include': '{userbase}/Python{py_version_nodot_plat}/Include',
-            'scripts': '{userbase}/Python{py_version_nodot_plat}/Scripts',
+            'stdlib': '{userbase}\\Python{py_version_nodot_plat}',
+            'platstdlib': '{userbase}\\Python{py_version_nodot_plat}',
+            'purelib': '{userbase}\\Python{py_version_nodot_plat}\\site-packages',
+            'platlib': '{userbase}\\Python{py_version_nodot_plat}\\site-packages',
+            'include': '{userbase}\\Python{py_version_nodot_plat}\\Include',
+            'scripts': '{userbase}\\Python{py_version_nodot_plat}\\Scripts',
             'data': '{userbase}',
             },
         'posix_user': {
