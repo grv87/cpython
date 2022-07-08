@@ -657,7 +657,7 @@ else:
                 return '\\\\.\\NUL'
         had_prefix = path.startswith(prefix)
         if not had_prefix and not isabs(path):
-            path = join(cwd, path)
+            path = cwd if path == "." or path == "" else join(cwd, path)
         try:
             path = _getfinalpathname(path)
             initial_winerror = 0
